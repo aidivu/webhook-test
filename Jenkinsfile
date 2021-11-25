@@ -1,12 +1,13 @@
-pipeline {
-  stages {
-    stage('Build') {
-      steps {
-        script {
-          def msbuild = tool name: 'MSBuild', type: 'hudson.plugins.msbuild.MsBuildInstallation'
-          bat "${msbuild} RealWorldMinimalApi/RealWorldMinimalApi.sln"
-        } 
-      } 
-    } 
-  } 
-} 
+node {
+  stage('SCM') {
+    checkout scm
+  }
+  stage('SonarQube Analysis') {
+    def scannerHome = tool 'SonarScanner for MSBuild'
+    withSonarQubeEnv() {
+      bat "dotnet ${scannerHome}\\SonarScanner.MSBuild.dll begin /k:\"aidivu_webhook-test\""
+      bat "dotnet build"
+      bat "dotnet ${scannerHome}\\SonarScanner.MSBuild.dll end"
+    }
+  }
+}
