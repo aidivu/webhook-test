@@ -1,8 +1,2 @@
 # webhook-test
-Testing the webhook
-
-If you see the this change, everything is correct.
-
-The changes are tracked.
-
-Change.
+Testing the webhook for .net project.
